@@ -8,14 +8,14 @@ API_KEY = os.getenv("TELEGRAM_API_KEY")
 HOST_IP = os.getenv("HOST_IP")
 
 bot = telebot.TeleBot(API_KEY)
+#reg_bot = register.registerThread(API_KEY)
 
-with open("helptxt.txt", "r") as t:
+with open("./resources/helptxt.txt", "r") as t:
     help_text = t.read()
     t.close()
 
 chat_states = {}
 cached_names = {}
-
 
 @bot.message_handler(commands=['help'])
 def help_command(message):
@@ -33,13 +33,6 @@ def test_self_id(message):
         print("Error has occurred. Command: %s" % message.text)
 
 
-def find_state(chat_id):
-    try:
-        return chat_states[chat_id]
-    except KeyError:
-        return statesEnums.empty
-
-
 @bot.message_handler(commands=["register"])
 def register_user(message):
     try:
@@ -48,6 +41,12 @@ def register_user(message):
     except:
         print("Error has occurred. Command: %s" % message.text)
 
+def find_state(chat_id):
+    try:
+        return chat_states[chat_id]
+    except KeyError:
+        return statesEnums.empty
+    
 
 def validate_state(chat_id, state_enum):
     if find_state(chat_id) is state_enum:
@@ -117,7 +116,5 @@ def ask_status(message):
         except IndexError:
             print("An error has occured")
 
-bot.polling()
 
-float("sss")
-# print(API_KEY)
+bot.polling()
