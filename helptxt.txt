@@ -1,0 +1,7 @@
+Here's a list of commands you can use:
+
+/help - Shows the list of commands you can use
+
+/self - Shows the id of the chat. (Used for debug)
+
+/register - Starts the register process for you to register as either a "helper" or a "seeker"
