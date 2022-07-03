@@ -105,16 +105,19 @@ class registerThread():
         self.reg_bot.polling()
 """
 
-def create_helper(name, lat, long, id):
-    sql = "INSERT INTO helpers (name, latitude, longitude, uid) VALUES (%s, %s, %s, %s)"
-    values = (name, lat, long, id)
+def create_helper(username, name, zip_code, id):
+    sql = "INSERT INTO helpers (username, name, zipcode, uid) VALUES (%s, %s, %s, %s)"
+    values = (username, name, zip_code, id)
     mycursor.execute(sql, values)
     mydb.commit()
     print("done")
 
-
+def create_seeker(username, name, zip_code, id):
+    sql = "INSERT INTO seekers (username, name, zipcode, uid) VALUES (%s, %s, %s, %s)"
+    values = (username, name, zip_code, id)
+    mycursor.execute(sql, values)
+    mydb.commit()
+    print("done")
 
 # mycursor.execute("CREATE TABLE helpers (name VARCHAR(255), latitude FLOAT(7, 5), longitude FLOAT(8, 5))")
-
-print("ok")
 

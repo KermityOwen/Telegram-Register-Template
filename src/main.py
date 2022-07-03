@@ -52,11 +52,11 @@ def validate_state(chat_id, state_enum):
     return find_state(chat_id) is state_enum
 
 
-
 @bot.message_handler(content_types=["text"])
 def ask_status(message):
-    print(chat_states[message.chat.id])
+    # print("debug")
     if validate_state(message.chat.id, statesEnums.registering):
+        # print("valid")
         try:
             if message.text.lower() == "helper":
                 bot.reply_to(message, "Registered as helper! \n\nIf you would like, please enter your name. (Type "
@@ -78,33 +78,29 @@ def ask_status(message):
         except:
             print("An error has occurred")
 
-
     if validate_state(message.chat.id, statesEnums.registeringHelperName):
-        print("valid")
+        # print("valid")
         try:
             if message.text == "SKIP":
                 cached_names[message.chat.id] = "*nameless*"
-                bot.reply_to(message, "Name skipped. \n\nPlease enter your coordinates (Format: '*Latitude* (empty space) *Longitude*').")
-                chat_states[message.chat.id] = statesEnums.registeringCoord
+                bot.reply_to(message, "Name skipped. \n\nPlease enter your zipcode (First 5 digits only for security purposes).")
+                chat_states[message.chat.id] = statesEnums.registeringZipcode
                 return
             else:
                 cached_names[message.chat.id] = message.text
-                bot.reply_to(message, "Name set as %s. \n\nPlease enter your coordinates." % message.text)
-                chat_states[message.chat.id] = statesEnums.registeringCoord
+                bot.reply_to(message, "Name set as %s. \n\nPlease enter your zipcode (First 5 digits only for security purposes)." % message.text)
+                chat_states[message.chat.id] = statesEnums.registeringZipcode
                 return
         except:
             print("An error has occured")
 
-
-    if validate_state(message.chat.id, statesEnums.registeringCoord):
-        print("valid")
+    if validate_state(message.chat.id, statesEnums.registeringZipcode):
+        # print("valid")
         try:
-            coord = re.split(" +", message.text)
-            for i in range(len(coord)):
-                coord[i] = float(coord[i])
+            zip_code = int(message.text)
             reg_name = cached_names[message.chat.id]
-            register.create_helper(reg_name, coord[0], coord[1], message.from_user.id)
-            bot.reply_to(message, "Registered as Helper. \n\nName: %s, Latitude: %s, Longitude: %s, UID: %s." % (reg_name, coord[0], coord[1], message.from_user.id))
+            register.create_helper(message.from_user.username, reg_name, zip_code, message.from_user.id)
+            bot.reply_to(message, "Registered as Helper. \n\nUsername: %s, \nName: %s, \nZip Code: %s, \nUID: %s." % (message.from_user.username, reg_name, zip_code, message.from_user.id))
             chat_states[message.chat.id] = statesEnums.empty
             return
         except ValueError:
