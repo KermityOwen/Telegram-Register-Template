@@ -49,12 +49,8 @@ def find_state(chat_id):
     
 
 def validate_state(chat_id, state_enum):
-    if find_state(chat_id) is state_enum:
-        return True
-        print("debug true")
-    else:
-        return False
-        print("debug false")
+    return find_state(chat_id) is state_enum
+
 
 
 @bot.message_handler(content_types=["text"])
